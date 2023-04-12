@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Image, View, ToastAndroid } from 'react-native';
+import { StyleSheet, Image, View, ToastAndroid, TouchableOpacity, } from 'react-native';
 import { Drawer, Text, Button, List } from 'react-native-paper';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const DrawerContent = (props) => {
+
+    const [petList, setPetList] = useState('');
 
     // const genres = useSelector(genresSelector);
     // const years = useSelector(yearsSelector);
@@ -125,14 +127,71 @@ const DrawerContent = (props) => {
                             props.navigation.navigate('SearchScreen');
                         }}
                     />
+                    <List.AccordionGroup>
+
+                        <List.Accordion
+                            style={styles.list}
+                            titleStyle={[styles.drawerTitle, styles.listTitle]}
+                            title="Thú Cưng"
+                            id="1"
+                            left={() => <Icon name="paw-outline" size={25} color="#000" />}
+                            right={({ isExpanded }) => {
+                                if (isExpanded) return <Icon name="chevron-forward-outline" size={20} color="#000" />
+                                return <Icon name="chevron-down-outline" size={20} color="#000" />
+                            }}
+                        >
+
+                            <List.Item
+                                style={{ marginLeft: 30 }}
+                                onPress={() => {
+                                    if (petList == "Cho") {
+                                        setPetList(false);
+                                    } else {
+                                        setPetList('Cho');
+                                    }
+                                }}
+                                titleStyle={styles.listItem}
+                                title={'Chó'}
+                                left={props => <Text {...props}>🐶</Text>}
+                                key={1}
+                            />
+                            <View style={[{ marginLeft: 30, }, { display: petList == 'Cho' ? 'flex' : 'none' }]}>
+                                <TouchableOpacity style={{ paddingVertical: 10 }}>
+                                    <Text style={{}}>
+                                        Alaska
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+
+                            <List.Item
+                                style={{ marginLeft: 30 }}
+                                onPress={() => {
+                                    if (petList == "Meo") {
+                                        setPetList(false);
+                                    } else {
+                                        setPetList("Meo");
+                                    }
+                                }}
+                                titleStyle={styles.listItem}
+                                title={'Mèo'}
+                                left={props => <Text {...props}>🐱</Text>}
+                                key={2}
+                            />
+                            <View style={[{ marginLeft: 30, }, { display: petList == 'Meo' ? 'flex' : 'none' }]}>
+                                <TouchableOpacity style={{ paddingVertical: 10 }}>
+                                    <Text style={{}}>
+                                        34
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+
+                        </List.Accordion>
+
+                    </List.AccordionGroup>
                 </Drawer.Section>
 
-                <View style={{ justifyContent: "center", alignItems: "center" }}>
-                    <View style={styles.authSection}></View>
-                </View>
-
             </DrawerContentScrollView>
-        </View>
+        </View >
     )
 }
 
@@ -176,15 +235,15 @@ const styles = StyleSheet.create({
         fontFamily: ''
     },
     list: {
-        backgroundColor: "#222222",
         paddingLeft: 17
     },
     listTitle: {
-        marginLeft: 18
+        marginLeft: 25
     },
     listItem: {
         color: "#000",
-        fontSize: 14,
-        fontFamily: ''
+        fontSize: 15,
+        fontFamily: '',
+
     }
 });
