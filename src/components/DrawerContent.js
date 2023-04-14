@@ -2,14 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Image, View, ToastAndroid, TouchableOpacity, } from 'react-native';
 import { Drawer, Text, Button, List } from 'react-native-paper';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
+import { useDispatch, useSelector } from 'react-redux';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { getCategories } from '../redux/reducers/category';
+import { getItems } from '../redux/reducers/item';
+import {
+    categoriesSelector,
+    itemsSelector
+} from '../redux/selectors';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const DrawerContent = (props) => {
-
+    const dispatch = useDispatch();
     const [petList, setPetList] = useState('');
+    const [itemList, setItemList] = useState('');
 
-    // const genres = useSelector(genresSelector);
+    const categories = useSelector(categoriesSelector);
+    const items = useSelector(itemsSelector);
     // const years = useSelector(yearsSelector);
     // const countries = useSelector(countriesSelector);
     // const isLoggedIn = useSelector(isLoggedInSelector);
@@ -24,13 +34,20 @@ const DrawerContent = (props) => {
     //         .catch((err) => ToastAndroid.show(err, ToastAndroid.SHORT));
     // }
 
-    // useEffect(() => {
-    //     dispatch(getGenres());
-    //     dispatch(getYears());
-    //     dispatch(getCountries());
-    //     return () => {
-    //     }
-    // }, []);
+    useEffect(() => {
+        dispatch(getCategories())
+            .then(unwrapResult)
+            .catch((err) => {
+                ToastAndroid.show(err, ToastAndroid.SHORT);
+            });
+        dispatch(getItems())
+            .then(unwrapResult)
+            .catch((err) => {
+                ToastAndroid.show(err, ToastAndroid.SHORT);
+            });
+        return () => {
+        }
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -140,51 +157,111 @@ const DrawerContent = (props) => {
                                 return <Icon name="chevron-down-outline" size={20} color="#000" />
                             }}
                         >
+                            {
+                                categories.map((e, i) => {
+                                    return (
+                                        <View key={i} style={{
+                                            flex: 1,
+                                            marginLeft: -30,
+                                        }}>
+                                            <List.Item
+                                                style={{}}
+                                                onPress={() => {
+                                                    if (petList == e.slug) {
+                                                        setPetList(false);
+                                                    } else {
+                                                        setPetList(e.slug);
+                                                    }
+                                                }}
+                                                titleStyle={styles.listItem}
+                                                title={e.name}
+                                                left={props => {
+                                                    if (e.slug == 'cho') {
+                                                        return <Text {...props}>🐶</Text>
+                                                    } else if (e.slug == 'meo') {
+                                                        return <Text {...props}>🐱</Text>
+                                                    }
 
-                            <List.Item
-                                style={{ marginLeft: 30 }}
-                                onPress={() => {
-                                    if (petList == "Cho") {
-                                        setPetList(false);
-                                    } else {
-                                        setPetList('Cho');
-                                    }
-                                }}
-                                titleStyle={styles.listItem}
-                                title={'Chó'}
-                                left={props => <Text {...props}>🐶</Text>}
-                                key={1}
-                            />
-                            <View style={[{ marginLeft: 30, }, { display: petList == 'Cho' ? 'flex' : 'none' }]}>
-                                <TouchableOpacity style={{ paddingVertical: 10 }}>
-                                    <Text style={{}}>
-                                        Alaska
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
+                                                }}
 
-                            <List.Item
-                                style={{ marginLeft: 30 }}
-                                onPress={() => {
-                                    if (petList == "Meo") {
-                                        setPetList(false);
-                                    } else {
-                                        setPetList("Meo");
-                                    }
-                                }}
-                                titleStyle={styles.listItem}
-                                title={'Mèo'}
-                                left={props => <Text {...props}>🐱</Text>}
-                                key={2}
-                            />
-                            <View style={[{ marginLeft: 30, }, { display: petList == 'Meo' ? 'flex' : 'none' }]}>
-                                <TouchableOpacity style={{ paddingVertical: 10 }}>
-                                    <Text style={{}}>
-                                        34
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
+                                            />
+                                            <View style={[{ marginLeft: 30, flex: 1 }, { display: petList == e.slug ? 'flex' : 'none' }]}>
+                                                {
+                                                    e.subcategory.map((sc, index) =>
+                                                    (
+                                                        <TouchableOpacity style={{ paddingVertical: 10, paddingHorizontal: 35 }} key={index}>
+                                                            <Text style={{}}>
+                                                                {sc.name}
+                                                            </Text>
+                                                        </TouchableOpacity>
+                                                    )
+                                                    )
+                                                }
 
+                                            </View>
+                                        </View>
+                                    )
+                                })
+                            }
+                        </List.Accordion>
+
+                        <List.Accordion
+                            style={styles.list}
+                            titleStyle={[styles.drawerTitle, styles.listTitle]}
+                            title="Phụ Kiện"
+                            id="2"
+                            left={() => <Icon name="cube-outline" size={25} color="#000" />}
+                            right={({ isExpanded }) => {
+                                if (isExpanded) return <Icon name="chevron-forward-outline" size={20} color="#000" />
+                                return <Icon name="chevron-down-outline" size={20} color="#000" />
+                            }}
+                        >
+                            {
+                                items.map((e, i) => {
+                                    return (
+                                        <View key={i} style={{
+                                            flex: 1,
+                                            marginLeft: -30,
+                                        }}>
+                                            <List.Item
+                                                style={{}}
+                                                onPress={() => {
+                                                    if (itemList == e.slug) {
+                                                        setItemList(false);
+                                                    } else {
+                                                        setItemList(e.slug);
+                                                    }
+                                                }}
+                                                titleStyle={styles.listItem}
+                                                title={e.name}
+                                                left={props => {
+                                                    if (e.slug == 'phu-kien-cho-cho') {
+                                                        return <Text {...props}>🐶</Text>
+                                                    } else if (e.slug == 'phu-kien-cho-meo') {
+                                                        return <Text {...props}>🐱</Text>
+                                                    }
+
+                                                }}
+
+                                            />
+                                            <View style={[{ marginLeft: 30, flex: 1 }, { display: itemList == e.slug ? 'flex' : 'none' }]}>
+                                                {
+                                                    e.subitem.map((si, index) =>
+                                                    (
+                                                        <TouchableOpacity style={{ paddingVertical: 10, paddingHorizontal: 35 }} key={index}>
+                                                            <Text style={{}}>
+                                                                {si.name}
+                                                            </Text>
+                                                        </TouchableOpacity>
+                                                    )
+                                                    )
+                                                }
+
+                                            </View>
+                                        </View>
+                                    )
+                                })
+                            }
                         </List.Accordion>
 
                     </List.AccordionGroup>
