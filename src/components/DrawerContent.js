@@ -190,7 +190,7 @@ const DrawerContent = (props) => {
                                                     e.subcategory.map((sc, index) =>
                                                     (
                                                         <TouchableOpacity style={{ paddingVertical: 10, paddingHorizontal: 35 }} key={index}>
-                                                            <Text style={{}}>
+                                                            <Text style={styles.listItem}>
                                                                 {sc.name}
                                                             </Text>
                                                         </TouchableOpacity>
@@ -249,7 +249,7 @@ const DrawerContent = (props) => {
                                                     e.subitem.map((si, index) =>
                                                     (
                                                         <TouchableOpacity style={{ paddingVertical: 10, paddingHorizontal: 35 }} key={index}>
-                                                            <Text style={{}}>
+                                                            <Text style={styles.listItem}>
                                                                 {si.name}
                                                             </Text>
                                                         </TouchableOpacity>
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
     drawerTitle: {
         color: "#000",
         fontSize: 17,
-        fontFamily: ''
+        fontFamily: 'Mali'
     },
     list: {
         paddingLeft: 17
@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
     listItem: {
         color: "#000",
         fontSize: 15,
-        fontFamily: '',
+        fontFamily: 'Mali',
 
     }
 });
