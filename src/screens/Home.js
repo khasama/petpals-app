@@ -14,6 +14,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Header from '../components/Header';
 import Banner from '../components/Banner';
 import ListProduct from '../components/ListProduct';
+import ListCats from '../components/ListCats';
+import ListDogs from '../components/ListDogs';
 const { width, height } = Dimensions.get("window");
 const Home = ({ navigation }) => {
 
@@ -47,6 +49,10 @@ const Home = ({ navigation }) => {
                 }
             >
                 <Banner />
+
+                <ListCats />
+
+                <ListDogs />
 
                 <ListProduct />
 

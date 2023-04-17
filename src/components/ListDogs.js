@@ -13,11 +13,11 @@ import React, { useState, useEffect } from 'react';
 import getPets from '../api/getPets';
 const { width, height } = Dimensions.get("window");
 
-const ListCats = () => {
+const ListDogs = () => {
     const [arrPet, setArrPet] = useState([]);
     const callApiGetPets = async () => {
         try {
-            const rs = await getPets('6416ee6433df1b92e7fb8354');
+            const rs = await getPets('6416ee5c33df1b92e7fb8351');
             if (rs.status == "success") {
                 if (rs.data != null) setArrPet(rs.data);
             } else {
@@ -63,7 +63,7 @@ const ListCats = () => {
                         fontSize: 18,
                     }}
                 >
-                    Mồn lều
+                    Chó
                 </Text>
                 <Image
                     source={require('../images/skull.png')}
@@ -90,7 +90,7 @@ const ListCats = () => {
                             >
                                 <Image
                                     style={styles.prodThumb}
-                                    source={{ uri: `http://192.168.1.3:3321/media/image/${item.images[0]}` }}
+                                    source={{ uri: item.thumb }}
                                 />
                                 <LinearGradient
                                     colors={['#E72515', '#FE6518']}
@@ -118,7 +118,7 @@ const ListCats = () => {
     )
 }
 
-export default ListCats;
+export default ListDogs;
 
 const styles = StyleSheet.create({
     prodThumb: {
