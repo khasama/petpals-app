@@ -33,19 +33,6 @@ const Animal = () => {
     const [category, setCategory] = useState(null);
     const [subcategory, setSubcategory] = useState(null);
 
-    const filterPets = async () => {
-        try {
-            const rs = await getPets(category, subcategory);
-            if (rs.status == "success") {
-                if (rs.data != null) setArrPet(rs.data);
-            } else {
-                Alert.alert(null, rs.message);
-            }
-        } catch (error) {
-            Alert.alert(null, error.message);
-        }
-    }
-
     const callApiGetPets = async () => {
         try {
             const rs = await getPets(category, subcategory);

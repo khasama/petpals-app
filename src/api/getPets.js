@@ -6,8 +6,8 @@ const getPets = async (idCategory, idSubcategory, limit, page) => {
         let query = {};
         if (idCategory) query = { ...query, ...{ category: idCategory } };
         if (idSubcategory || idSubcategory != 0) query = { ...query, ...{ subcategory: idSubcategory } };
-        if (limit) query = { ...query, ...{ subcategory: limit } };
-        if (page) query = { ...query, ...{ subcategory: page } };
+        if (limit) query = { ...query, ...{ limit } };
+        if (page) query = { ...query, ...{ page } };
         const res = await api.get(`/pet?${queryString.stringify(query)}`);
         if (res.status == 200) {
             const result = res.data;
