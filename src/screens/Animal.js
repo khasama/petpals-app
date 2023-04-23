@@ -18,10 +18,13 @@ import { useSelector } from 'react-redux';
 import { categoriesSelector } from '../redux/selectors';
 import { LinearGradient } from 'expo-linear-gradient';
 import getPets from '../api/getPets';
+import { useFocusEffect } from '@react-navigation/native';
 
 const { width, height } = Dimensions.get("window");
 
-const Animal = () => {
+const Animal = ({ route, navigation }) => {
+    const idCategory = route.params?.category;
+    // const idSubcategory = route.params?.subcategory;
     const [refreshing, setRefreshing] = useState(false);
 
     const categories = useSelector(categoriesSelector);
@@ -33,11 +36,13 @@ const Animal = () => {
     const [category, setCategory] = useState(null);
     const [subcategory, setSubcategory] = useState(null);
 
-    const callApiGetPets = async () => {
+    const callApiGetPets = async (category, subcategory) => {
         try {
             const rs = await getPets(category, subcategory);
             if (rs.status == "success") {
-                if (rs.data != null) setArrPet(rs.data);
+                if (rs.data != null) {
+                    setArrPet(pets => ([...pets, ...rs.data]));
+                }
             } else {
                 Alert.alert(null, rs.message);
             }
@@ -51,11 +56,23 @@ const Animal = () => {
         setRefreshing(false);
     }, []);
 
+    useFocusEffect(
+        useCallback(() => {
+            // console.log(route.params);
+            // if (route.params?.category && route.params?.subcategory) {
+            //     callApiGetPets(route.params.category, route.params.subcategory);
+            // } else {
+            //     callApiGetPets(category, subcategory);
+            // }
+            callApiGetPets(category, subcategory);
+            return () => { };
+        }, [idCategory])
+    );
+
     useEffect(() => {
-        callApiGetPets();
         return () => {
         }
-    }, []);
+    }, [idCategory]);
     return (
         <View style={styles.container}>
             <Header allowBack={false}></Header>
@@ -167,10 +184,26 @@ const Animal = () => {
                         }}
                         mode="contained"
                         labelStyle={{ color: "#fff", fontFamily: "MaliBold" }}
-                        onPress={() => callApiGetPets()}
+                        onPress={() => callApiGetPets(category, subcategory)}
                     >
                         Lọc
                     </Button>
+                </View>
+
+                <View
+                    style={{
+                        marginHorizontal: 10,
+                        marginBottom: 15
+                    }}
+                >
+                    <Text
+                        style={{
+                            fontFamily: 'MaliMedium',
+                            fontSize: 18
+                        }}
+                    >
+                        Chó - Husky: 100 kết quả
+                    </Text>
                 </View>
 
                 <View

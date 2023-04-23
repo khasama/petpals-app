@@ -17,48 +17,52 @@ const screenOptionStyle = {
 
 const HomeStackNavigator = () => {
     return (
-        <Stack.Navigator screenOptions={screenOptionStyle} >
+        <Stack.Navigator screenOptions={screenOptionStyle} initialRouteName="Home">
             <Stack.Screen name="HomeScreen" component={HomeScreen} />
             <Stack.Screen name="ProductScreen" component={ProductScreen} />
+            <Stack.Screen name="PetScreen" component={PetScreen} />
             <Stack.Screen name="AuthScreen" component={AuthScreen} />
         </Stack.Navigator>
     )
 }
 
-const SearchStackNavigator = () => {
+const ProfileStackNavigator = () => {
     return (
-        <Stack.Navigator screenOptions={screenOptionStyle}>
-            <Stack.Screen name="SearchScreen" component={SearchScreen} />
-            <Stack.Screen name="ProductScreen" component={ProductScreen} />
+        <Stack.Navigator screenOptions={screenOptionStyle} initialRouteName="Profile">
+            <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+            <Stack.Screen name="AuthScreen" component={AuthScreen} />
         </Stack.Navigator>
     )
 }
 
 const ItemStackNavigator = () => {
     return (
-        <Stack.Navigator screenOptions={screenOptionStyle}>
+        <Stack.Navigator screenOptions={screenOptionStyle} initialRouteName="Item">
             <Stack.Screen name="ItemScreen" component={ItemScreen} />
             <Stack.Screen name="ProductScreen" component={ProductScreen} />
+            <Stack.Screen name="AuthScreen" component={AuthScreen} />
         </Stack.Navigator>
     )
 }
 
 const AnimalStackNavigator = () => {
     return (
-        <Stack.Navigator screenOptions={screenOptionStyle}>
+        <Stack.Navigator screenOptions={screenOptionStyle} initialRouteName="Animal">
             <Stack.Screen name="AnimalScreen" component={AnimalScreen} />
             <Stack.Screen name="PetScreen" component={PetScreen} />
+            <Stack.Screen name="AuthScreen" component={AuthScreen} />
         </Stack.Navigator>
     )
 }
 
 const CartStackNavigator = () => {
     return (
-        <Stack.Navigator screenOptions={screenOptionStyle}>
+        <Stack.Navigator screenOptions={screenOptionStyle} initialRouteName="Cart">
             <Stack.Screen name="CartScreen" component={CartScreen} />
             <Stack.Screen name="ProductScreen" component={ProductScreen} />
+            <Stack.Screen name="AuthScreen" component={AuthScreen} />
         </Stack.Navigator>
     )
 }
 
-export { HomeStackNavigator, SearchStackNavigator, ItemStackNavigator, AnimalStackNavigator, CartStackNavigator }
+export { HomeStackNavigator, ProfileStackNavigator, ItemStackNavigator, AnimalStackNavigator, CartStackNavigator }

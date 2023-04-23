@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import {
     HomeStackNavigator,
-    SearchStackNavigator,
+    ProfileStackNavigator,
     ItemStackNavigator,
     AnimalStackNavigator,
     CartStackNavigator
@@ -34,8 +34,8 @@ const TabNavigator = () => {
                     if (route.name === 'Home') {
                         iconName = focused ? 'home' : 'home-outline';
                         size = focused ? size + 5 : size;
-                    } else if (route.name === 'Search') {
-                        iconName = focused ? 'search' : 'search-outline';
+                    } else if (route.name === 'Profile') {
+                        iconName = focused ? 'person' : 'person-outline';
                         size = focused ? size + 5 : size;
                     } else if (route.name === 'Animal') {
                         iconName = focused ? 'paw' : 'paw-outline';
@@ -78,8 +78,8 @@ const TabNavigator = () => {
             <Tab.Screen name="Home" component={HomeStackNavigator} />
             <Tab.Screen name="Animal" component={AnimalStackNavigator} />
             <Tab.Screen name="Item" component={ItemStackNavigator} />
-            <Tab.Screen name="Search" component={SearchStackNavigator} />
             <Tab.Screen name="Cart" component={CartStackNavigator} />
+            <Tab.Screen name="Profile" component={ProfileStackNavigator} />
         </Tab.Navigator>
     )
 }

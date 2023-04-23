@@ -39,14 +39,13 @@ const authSlice = createSlice({
     },
 });
 
-export const login = createAsyncThunk('auth/login', async ({ username, password }, { rejectWithValue }) => {
+export const login = createAsyncThunk('auth/login', async ({ email, password }, { rejectWithValue }) => {
     try {
-        const res = await instance.post(`/auth/login`, { username, password });
+        const res = await instance.post(`/auth/login`, { email, password });
         if (res.status == 200) {
             if (res.data.status == 'success') {
-                await SecureStore.setItemAsync('access_token', res.data.data.access_token);
-                await SecureStore.setItemAsync('uid', String(res.data.data.user.id));
-                return res.data.data.user;
+                await SecureStore.setItemAsync('access_token', res.data.data.accessToken);
+                return res.data.data;
             } else {
                 throw rejectWithValue(res.data.message);
             }
@@ -66,7 +65,6 @@ export const logout = createAsyncThunk('auth/logout', async (_, { rejectWithValu
         if (res.status == 200) {
             if (res.data.status == 'success') {
                 await SecureStore.deleteItemAsync('access_token');
-                await SecureStore.deleteItemAsync('uid');
             } else {
                 throw rejectWithValue(res.data.message);
             }

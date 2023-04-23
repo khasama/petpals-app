@@ -8,12 +8,15 @@ import { getCategories } from '../redux/reducers/category';
 import { getItems } from '../redux/reducers/item';
 import {
     categoriesSelector,
-    itemsSelector
+    itemsSelector,
+    isLoggedInSelector,
+    currentUserSelector
 } from '../redux/selectors';
-
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const DrawerContent = (props) => {
+    const navigation = useNavigation();
     const dispatch = useDispatch();
     const [petList, setPetList] = useState('');
     const [itemList, setItemList] = useState('');
@@ -22,8 +25,8 @@ const DrawerContent = (props) => {
     const items = useSelector(itemsSelector);
     // const years = useSelector(yearsSelector);
     // const countries = useSelector(countriesSelector);
-    // const isLoggedIn = useSelector(isLoggedInSelector);
-    // const currentUser = useSelector(currentUserSelector);
+    const isLoggedIn = useSelector(isLoggedInSelector);
+    const currentUser = useSelector(currentUserSelector);
 
     // const handleLogout = () => {
     //     dispatch(logout())
@@ -55,8 +58,8 @@ const DrawerContent = (props) => {
                 <View style={styles.logoConainer}>
                     <Image source={require('../images/logo.png')} style={styles.logoImage} />
                 </View>
-                <Drawer.Section style={{ justifyContent: "center", alignItems: "center", marginTop: 10 }}>
-                    {/* <View style={styles.authSection}>
+                <Drawer.Section style={styles.drawerSection} >
+                    <View style={styles.authSection}>
                         {
                             isLoggedIn ?
                                 (
@@ -82,10 +85,7 @@ const DrawerContent = (props) => {
                                                 justifyContent: "center"
                                             }}
                                         >
-                                            <Text style={{ color: "#fff", fontFamily: '', fontSize: 18 }}>
-                                                {currentUser.username}
-                                            </Text>
-                                            <Text style={{ color: "#fff", fontFamily: '', fontSize: 12 }}>
+                                            <Text style={{ color: "#000", fontFamily: 'Mali', fontSize: 12 }}>
                                                 {currentUser.email}
                                             </Text>
                                         </View>
@@ -93,13 +93,14 @@ const DrawerContent = (props) => {
                                 ) :
                                 (
                                     <View>
-                                        <Text style={{ color: "#fff", textAlign: "center", fontFamily: '' }}>
+                                        <Text style={{ color: "#000", textAlign: "center", fontFamily: 'Mali' }}>
                                             Bạn chưa đăng nhập
                                         </Text>
                                         <View style={{ flexDirection: "row" }}>
                                             <Button
                                                 style={styles.authBtn}
-                                                labelStyle={{ fontFamily: '' }}
+                                                labelStyle={{ fontFamily: 'Mali' }}
+                                                buttonColor="#E72515"
                                                 icon={({ size, color }) => (
                                                     <Icon
                                                         name="log-in-outline" size={size} color={color}
@@ -115,9 +116,7 @@ const DrawerContent = (props) => {
                                     </View>
                                 )
                         }
-                    </View> */}
-                </Drawer.Section>
-                <Drawer.Section style={styles.drawerSection} >
+                    </View>
                     <DrawerItem
                         icon={({ size, color }) => (
                             <Icon
@@ -189,7 +188,19 @@ const DrawerContent = (props) => {
                                                 {
                                                     e.subcategory.map((sc, index) =>
                                                     (
-                                                        <TouchableOpacity style={{ paddingVertical: 10, paddingHorizontal: 35 }} key={index}>
+                                                        <TouchableOpacity
+                                                            style={{ paddingVertical: 10, paddingHorizontal: 35 }}
+                                                            key={index}
+                                                            onPress={() => {
+                                                                navigation.navigate('Animal', {
+                                                                    screen: 'AnimalScreen',
+                                                                    params: {
+                                                                        category: e._id,
+                                                                        subcategory: sc._id,
+                                                                    }
+                                                                });
+                                                            }}
+                                                        >
                                                             <Text style={styles.listItem}>
                                                                 {sc.name}
                                                             </Text>
@@ -265,6 +276,7 @@ const DrawerContent = (props) => {
                         </List.Accordion>
 
                     </List.AccordionGroup>
+
                 </Drawer.Section>
 
             </DrawerContentScrollView>
@@ -282,9 +294,6 @@ const styles = StyleSheet.create({
     authSection: {
         color: "#fff",
         marginTop: 10,
-        borderBottomColor: "gray",
-        borderBottomWidth: 1,
-        width: "95%",
         justifyContent: "center",
         alignItems: "center",
         paddingBottom: 10
