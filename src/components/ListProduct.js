@@ -12,8 +12,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState, useEffect } from 'react';
 import getProducts from '../api/getProducts';
 const { width, height } = Dimensions.get("window");
+import { useNavigation } from '@react-navigation/native';
 const ListProduct = () => {
-
+    const navigation = useNavigation();
     const [arrProduct, setArrProduct] = useState([]);
     const callApiGetProducts = async () => {
         try {
@@ -86,7 +87,9 @@ const ListProduct = () => {
                         renderItem={({ item }) =>
                             <TouchableOpacity
                                 style={{ width: width / 2.5, marginRight: 10, }}
-                                onPress={() => { }}
+                                onPress={() => {
+                                    navigation.navigate('ProductScreen', { id: item._id, });
+                                }}
                             >
                                 <Image
                                     style={styles.prodThumb}

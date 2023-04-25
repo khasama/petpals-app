@@ -40,9 +40,7 @@ const Animal = ({ route, navigation }) => {
         try {
             const rs = await getPets(category, subcategory);
             if (rs.status == "success") {
-                if (rs.data != null) {
-                    setArrPet(pets => ([...pets, ...rs.data]));
-                }
+                if (rs.data != null) setArrPet(rs.data);
             } else {
                 Alert.alert(null, rs.message);
             }
