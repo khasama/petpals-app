@@ -10,6 +10,10 @@ import {
     CartStackNavigator
 } from './StackNavigator';
 import { View, Text } from 'react-native';
+import { useSelector } from 'react-redux';
+import {
+    currentCartSelector
+} from '../redux/selectors';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,6 +29,7 @@ const getRouteName = (route) => {
 }
 
 const TabNavigator = () => {
+    const cart = useSelector(currentCartSelector);
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -59,7 +64,7 @@ const TabNavigator = () => {
                                 paddingHorizontal: 5,
                                 borderRadius: 100
                             }}>
-                                <Text style={{ color: "#fff", fontSize: 12, textAlign: 'center' }}>5</Text>
+                                <Text style={{ color: "#fff", fontSize: 12, textAlign: 'center' }}>{cart.length}</Text>
                             </View>
                         </View>
                     ) : (<Icon name={iconName} size={size} color={color} />);

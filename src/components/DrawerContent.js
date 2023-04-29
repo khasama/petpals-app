@@ -12,6 +12,7 @@ import {
     isLoggedInSelector,
     currentUserSelector
 } from '../redux/selectors';
+import { logout } from '../redux/reducers/auth';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -23,19 +24,17 @@ const DrawerContent = (props) => {
 
     const categories = useSelector(categoriesSelector);
     const items = useSelector(itemsSelector);
-    // const years = useSelector(yearsSelector);
-    // const countries = useSelector(countriesSelector);
     const isLoggedIn = useSelector(isLoggedInSelector);
     const currentUser = useSelector(currentUserSelector);
 
-    // const handleLogout = () => {
-    //     dispatch(logout())
-    //         .then(unwrapResult)
-    //         .then(() => {
-    //             props.navigation.navigate("Home");
-    //         })
-    //         .catch((err) => ToastAndroid.show(err, ToastAndroid.SHORT));
-    // }
+    const handleLogout = () => {
+        dispatch(logout())
+            .then(unwrapResult)
+            .then(() => {
+                props.navigation.navigate("Home");
+            })
+            .catch((err) => ToastAndroid.show(err, ToastAndroid.SHORT));
+    }
 
     useEffect(() => {
         dispatch(getCategories())
@@ -276,6 +275,22 @@ const DrawerContent = (props) => {
                         </List.Accordion>
 
                     </List.AccordionGroup>
+
+                    {
+                        isLoggedIn && (
+                            <DrawerItem
+                                icon={({ size, color }) => (
+                                    <Icon
+                                        name="log-out-outline" size={size} color="#000"
+                                    />
+                                )}
+                                label={() => {
+                                    return <Text style={styles.drawerTitle}>Đăng Xuất</Text>
+                                }}
+                                onPress={handleLogout}
+                            />
+                        )
+                    }
 
                 </Drawer.Section>
 

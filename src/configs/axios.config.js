@@ -2,8 +2,8 @@ import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
 
 const instance = axios.create({
-    // baseURL: 'http://192.168.1.3:3321/api/v1/',
-    baseURL: 'http://petpals.supervps.ga/api/v1/',
+    baseURL: 'http://192.168.1.17:3321/api/v1/',
+    // baseURL: 'http://petpals.supervps.ga/api/v1/',
     withCredentials: true,
 });
 
