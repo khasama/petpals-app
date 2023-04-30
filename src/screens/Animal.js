@@ -217,7 +217,7 @@ const Animal = ({ route, navigation }) => {
                             <TouchableOpacity
                                 key={e._id}
                                 style={{ width: width / 2.5, marginHorizontal: 10, }}
-                                onPress={() => { }}
+                                onPress={() => { navigation.navigate('PetScreen', { id: e._id, }); }}
                             >
                                 <Image
                                     style={styles.prodThumb}

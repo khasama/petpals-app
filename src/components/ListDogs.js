@@ -11,9 +11,11 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState, useEffect } from 'react';
 import getPets from '../api/getPets';
+import { useNavigation } from '@react-navigation/native';
 const { width, height } = Dimensions.get("window");
 
 const ListDogs = () => {
+    const navigation = useNavigation();
     const [arrPet, setArrPet] = useState([]);
     const callApiGetPets = async () => {
         try {
@@ -86,7 +88,7 @@ const ListDogs = () => {
                         renderItem={({ item }) =>
                             <TouchableOpacity
                                 style={{ width: width / 2.5, marginRight: 10, }}
-                                onPress={() => { }}
+                                onPress={() => { navigation.navigate('PetScreen', { id: item._id, }); }}
                             >
                                 <Image
                                     style={styles.prodThumb}

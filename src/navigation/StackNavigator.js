@@ -9,6 +9,7 @@ import ProfileScreen from '../screens/Profile';
 import CartScreen from '../screens/Cart';
 import AuthScreen from '../screens/Auth';
 import ProductScreen from '../screens/Product';
+import CheckoutScreen from '../screens/Checkout';
 
 const Stack = createStackNavigator();
 const screenOptionStyle = {
@@ -30,7 +31,6 @@ const ProfileStackNavigator = () => {
     return (
         <Stack.Navigator screenOptions={screenOptionStyle} initialRouteName="Profile">
             <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-            <Stack.Screen name="AuthScreen" component={AuthScreen} />
         </Stack.Navigator>
     )
 }
@@ -61,6 +61,7 @@ const CartStackNavigator = () => {
             <Stack.Screen name="CartScreen" component={CartScreen} />
             <Stack.Screen name="ProductScreen" component={ProductScreen} />
             <Stack.Screen name="AuthScreen" component={AuthScreen} />
+            <Stack.Screen name="CheckoutScreen" component={CheckoutScreen} />
         </Stack.Navigator>
     )
 }

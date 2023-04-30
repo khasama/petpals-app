@@ -18,12 +18,13 @@ import { useSelector } from 'react-redux';
 import { itemsSelector } from '../redux/selectors';
 import { LinearGradient } from 'expo-linear-gradient';
 import getProducts from '../api/getProducts';
+import { useNavigation } from '@react-navigation/native';
 
 const { width, height } = Dimensions.get("window");
 
 const Item = () => {
     const [refreshing, setRefreshing] = useState(false);
-
+    const navigation = useNavigation();
     const items = useSelector(itemsSelector);
     const [subitems, setSubitems] = useState([]);
     const [defaultValue, setDefaultValue] = useState('Loại');
@@ -185,7 +186,7 @@ const Item = () => {
                             <TouchableOpacity
                                 key={e._id}
                                 style={{ width: width / 2.5, marginHorizontal: 10, }}
-                                onPress={() => { }}
+                                onPress={() => { navigation.navigate('ProductScreen', { id: e._id, }); }}
                             >
                                 <Image
                                     style={styles.prodThumb}

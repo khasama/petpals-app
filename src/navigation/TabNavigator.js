@@ -21,6 +21,8 @@ const getRouteName = (route) => {
     const routeName = getFocusedRouteNameFromRoute(route);
     if (
         routeName?.includes('ProductScreen') ||
+        routeName?.includes('PetScreen') ||
+        routeName?.includes('CheckoutScreen') ||
         routeName?.includes('AuthScreen')
     ) {
         return "none";

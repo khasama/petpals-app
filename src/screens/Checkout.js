@@ -1,36 +1,27 @@
 import {
+    RefreshControl,
+    ScrollView,
     StyleSheet,
     Text,
     View,
-    ScrollView,
-    RefreshControl,
-    Dimensions,
-    TouchableOpacity,
-    Image,
-    Alert
+    Image
 } from 'react-native';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import Header from '../components/Header';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
 import {
-    isLoggedInSelector,
+    currentCartSelector,
+    totalSelector,
     currentUserSelector
 } from '../redux/selectors';
-import { TextInput, Button } from 'react-native-paper';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useFocusEffect } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { Button, TextInput } from 'react-native-paper';
+import Header from '../components/Header';
+import { useCallback } from 'react';
 
-import { useNavigation } from '@react-navigation/native';
-
-const { width, height } = Dimensions.get("window");
-
-const Profile = () => {
-    const navigation = useNavigation();
-    const isLoggedIn = useSelector(isLoggedInSelector);
+const Checkout = () => {
     const currentUser = useSelector(currentUserSelector);
     const [refreshing, setRefreshing] = useState(false);
-
+    const cart = useSelector(currentCartSelector);
+    const total = useSelector(totalSelector);
     const [email, setEmail] = useState(currentUser.email);
     const [fullName, setFullName] = useState(currentUser.fullName || '');
     const [address, setaddress] = useState(currentUser.address || '');
@@ -41,19 +32,9 @@ const Profile = () => {
         setRefreshing(false);
     }, []);
 
-    useFocusEffect(
-        useCallback(() => {
-            if (isLoggedIn) {
-
-            } else {
-                navigation.navigate('Home', { screen: 'AuthScreen', });
-            }
-        }, [isLoggedIn])
-    );
-
     return (
         <View style={styles.container}>
-            <Header allowBack={false}></Header>
+            <Header allowBack={true}></Header>
 
             <ScrollView
                 nestedScrollEnabled
@@ -66,80 +47,77 @@ const Profile = () => {
                     />
                 }
             >
-                <View style={{
-                    width: '100%',
-                    height: height / 4,
-                    position: 'relative',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    flex: 1,
-                }}>
-                    <LinearGradient
-                        colors={['#E72515', '#FE6518']}
-                        start={[0, 1]}
-                        end={[1, 1]}
-                        style={{
-                            width: 1500,
-                            height: 1500,
-                            borderRadius: 1500 / 2,
-                            position: 'absolute',
-                            top: -1340,
-                        }}
-                    >
-                    </LinearGradient>
-
-                    <View
-                        style={{
-                            width: '100%',
-                            flexDirection: 'row',
-                            paddingHorizontal: 20
-                        }}
-                    >
-                        <View
-                            style={{
-                                marginRight: 10
-                            }}
-                        >
-                            <Image
-                                source={{ uri: currentUser.avatar }}
+                <View
+                    style={{
+                        padding: 10
+                    }}
+                >
+                    {
+                        cart.map((e, i) =>
+                            <View
+                                key={e.product._id}
                                 style={{
-                                    width: 60,
-                                    height: 60,
-                                    borderRadius: 30
-                                }}
-                            />
-                        </View>
-                        <View>
-                            <Text
-                                style={{
-                                    color: "#fff",
-                                    fontFamily: "Mali",
-                                    fontSize: 16
+                                    marginVertical: 5
                                 }}
                             >
-                                {currentUser.email}
-                            </Text>
-                            <TouchableOpacity
-                                style={{
-                                    backgroundColor: '#fff',
-                                    alignItems: 'center',
-                                    borderRadius: 5
-                                }}
-                            >
-                                <Text
+                                <View
                                     style={{
-                                        color: '#E72515',
-                                        fontFamily: 'Mali'
+                                        width: '100%',
+                                        flexDirection: 'row'
                                     }}
                                 >
-                                    Đơn hàng của bạn
-                                </Text>
-                            </TouchableOpacity>
-
-                        </View>
-                    </View>
+                                    <Image
+                                        source={{ uri: e.product.thumb }}
+                                        style={{
+                                            width: 85,
+                                            height: 85,
+                                            resizeMode: 'contain',
+                                            flex: 1
+                                        }}
+                                    />
+                                    <View
+                                        style={{
+                                            flex: 3,
+                                            marginLeft: 10
+                                        }}
+                                    >
+                                        <Text
+                                            style={{
+                                                fontFamily: 'MaliMedium'
+                                            }}
+                                            numberOfLines={2}
+                                        >
+                                            {e.product.name}
+                                        </Text>
+                                        <View
+                                            style={{
+                                                flexDirection: 'row',
+                                            }}
+                                        >
+                                            <Text
+                                                style={{
+                                                    fontFamily: 'Mali',
+                                                    flex: 1,
+                                                }}
+                                            >
+                                                Số lượng: {e.quantity}
+                                            </Text>
+                                            <Text
+                                                style={{
+                                                    fontFamily: 'Mali',
+                                                    flex: 1,
+                                                    textAlign: 'right'
+                                                }}
+                                            >
+                                                Giá: <Text style={{ color: "#E72515" }} >{e.product.price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</Text>
+                                            </Text>
+                                        </View>
+                                    </View>
+                                </View>
+                            </View>
+                        )
+                    }
                 </View>
-
                 <View
                     style={{
                         paddingHorizontal: 20
@@ -149,7 +127,6 @@ const Profile = () => {
                         mode='outlined'
                         label="Email"
                         value={email}
-                        disabled
                         onChangeText={text => { }}
                         style={{
                             marginVertical: 5,
@@ -200,6 +177,19 @@ const Profile = () => {
                             fontFamily: 'Mali'
                         }}
                     />
+                    <TextInput
+                        mode='outlined'
+                        label="Tổng cộng"
+                        value={String(total)}
+                        activeOutlineColor="#E72515"
+                        disabled
+                        style={{
+                            marginVertical: 5,
+                        }}
+                        contentStyle={{
+                            fontFamily: 'Mali'
+                        }}
+                    />
 
                     <Button
                         labelStyle={{
@@ -212,7 +202,7 @@ const Profile = () => {
                         buttonColor="#E72515"
                         onPress={() => console.log('Pressed')}
                     >
-                        Lưu
+                        Thanh toán
                     </Button>
                 </View>
 
@@ -221,7 +211,7 @@ const Profile = () => {
     )
 }
 
-export default Profile;
+export default Checkout;
 
 const styles = StyleSheet.create({
     container: {
@@ -231,23 +221,4 @@ const styles = StyleSheet.create({
     scrollView: {
         paddingBottom: 20,
     },
-    prodThumb: {
-        width: width / 2.5,
-        height: width / 2.5,
-        resizeMode: 'contain',
-        backgroundColor: "#fff"
-    },
-    prodDetailCtn: {
-        width: '100%',
-        height: width / 4,
-        paddingHorizontal: 5,
-        borderTopRightRadius: 20,
-        borderTopLeftRadius: 20,
-        top: -10
-    },
-    prodDetail: {
-        color: "#fff",
-        fontFamily: 'MaliBold',
-        textAlign: 'center'
-    }
 });

@@ -6,26 +6,19 @@ const authSlice = createSlice({
     initialState: {
         isLoggedIn: false,
         currentUser: {},
-        cart: []
+        cart: [],
+        total: 0
     },
-    reducers: {
-        // IMMER
-        // addTodo: (state, action) => {
-        //     state.push(action.payload);
-        // }, // action creators
-        // toggleTodoStatus: (state, action) => {
-        //     const currentTodo = state.find((todo) => todo.id === action.payload);
-        //     if (currentTodo) {
-        //         currentTodo.completed = !currentTodo.completed;
-        //     }
-        // },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(login.fulfilled, (state, action) => {
                 state.isLoggedIn = true;
                 state.currentUser = action.payload.user;
                 state.cart = action.payload.cart;
+                let total = 0;
+                action.payload.cart.map((e, i) => total += parseInt(e.quantity * e.product.price));
+                state.total = total;
             })
             .addCase(logout.fulfilled, (state) => {
                 state.isLoggedIn = false;
@@ -41,6 +34,15 @@ const authSlice = createSlice({
             })
             .addCase(addCart.fulfilled, (state, action) => {
                 state.cart = action.payload;
+                let total = 0;
+                action.payload.map((e, i) => total += parseInt(e.quantity * e.product.price));
+                state.total = total;
+            })
+            .addCase(updateCart.fulfilled, (state, action) => {
+                state.cart = action.payload;
+                let total = 0;
+                action.payload.map((e, i) => total += parseInt(e.quantity * e.product.price));
+                state.total = total;
             })
     },
 });
@@ -148,7 +150,7 @@ export const addCart = createAsyncThunk('auth/addCart', async ({ idUser, idProdu
         const res = await instance.post(`/cart/add`, { idUser, idProduct, quantity });
         if (res.status == 200) {
             if (res.data.status == 'success') {
-                return res.data.data.products;
+                return res.data.data;
             } else {
                 throw rejectWithValue(res.data.message);
             }
@@ -162,9 +164,9 @@ export const addCart = createAsyncThunk('auth/addCart', async ({ idUser, idProdu
     }
 });
 
-export const updateCart = createAsyncThunk('auth/updateCart', async ({ idUSer, idProduct, quantity }, { rejectWithValue }) => {
+export const updateCart = createAsyncThunk('auth/updateCart', async ({ idUser, idProduct, quantity }, { rejectWithValue }) => {
     try {
-        const res = await instance.post(`/cart/update`, { idUSer, idProduct, quantity });
+        const res = await instance.post(`/cart/update`, { idUser, idProduct, quantity });
         if (res.status == 200) {
             if (res.data.status == 'success') {
                 return res.data.data;
