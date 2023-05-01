@@ -44,6 +44,10 @@ const authSlice = createSlice({
                 action.payload.map((e, i) => total += parseInt(e.quantity * e.product.price));
                 state.total = total;
             })
+            .addCase(clear.fulfilled, (state, action) => {
+                state.cart = [];
+                state.total = 0;
+            })
     },
 });
 
@@ -181,6 +185,10 @@ export const updateCart = createAsyncThunk('auth/updateCart', async ({ idUser, i
             throw error;
         }
     }
+});
+
+export const clear = createAsyncThunk('auth/clear', async (_, { rejectWithValue }) => {
+    return null;
 });
 
 export default authSlice;
