@@ -31,6 +31,8 @@ const Animal = ({ route, navigation }) => {
     const [subcategories, setSubcategories] = useState([]);
     const [defaultValue, setDefaultValue] = useState('Loại');
     const dropdownRef = useRef({});
+    const sortMenu = ["Mới nhất", "Cũ nhất", "Giá tăng dần", "Giá giảm dần"];
+    const [sortSelected, setSortSelected] = useState(0);
 
     const [arrPet, setArrPet] = useState([]);
     const [category, setCategory] = useState(null);
@@ -38,7 +40,7 @@ const Animal = ({ route, navigation }) => {
 
     const callApiGetPets = async (category, subcategory) => {
         try {
-            const rs = await getPets(category, subcategory);
+            const rs = await getPets(category, subcategory, null, null, sortSelected);
             if (rs.status == "success") {
                 if (rs.data != null) setArrPet(rs.data);
             } else {
@@ -176,16 +178,58 @@ const Animal = ({ route, navigation }) => {
                             }}
                         />
                     </View>
-                    <Button
+                    <View
                         style={{
-                            backgroundColor: "#fc4503"
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                            marginBottom: 5
                         }}
-                        mode="contained"
-                        labelStyle={{ color: "#fff", fontFamily: "MaliBold" }}
-                        onPress={() => callApiGetPets(category, subcategory)}
                     >
-                        Lọc
-                    </Button>
+                        <SelectDropdown
+                            data={sortMenu}
+                            defaultValueByIndex={0}
+                            defaultValue={"Mới nhất"}
+                            searchInputStyle={{ color: '#fff', fontFamily: 'Mali' }}
+                            rowTextStyle={{ color: '#000', fontFamily: 'Mali', textAlign: 'left' }}
+                            buttonTextStyle={{ color: '#000', fontFamily: 'Mali', textAlign: 'left' }}
+                            dropdownIconPosition={'right'}
+                            selectedRowStyle={{ backgroundColor: "#fc4503" }}
+                            selectedRowTextStyle={{ color: "#fff" }}
+                            buttonStyle={{
+                                padding: 5,
+                                backgroundColor: 'transparent',
+                                borderWidth: 1,
+                                borderColor: "#000",
+                                borderRadius: 10,
+                                width: "45%",
+                                marginHorizontal: 5
+                            }}
+                            onSelect={(selectedItem, index) => {
+                                setSortSelected(index);
+                            }}
+                            buttonTextAfterSelection={(selectedItem, index) => {
+                                return selectedItem;
+                            }}
+                            rowTextForSelection={(item, index) => {
+                                return item;
+                            }}
+                            renderDropdownIcon={() => {
+                                return <Icon name="chevron-down-outline" size={25} color={'#000'} />
+                            }}
+                        />
+                        <Button
+                            style={{
+                                backgroundColor: "#fc4503",
+                                alignSelf: 'center',
+                            }}
+                            mode="contained"
+                            labelStyle={{ color: "#fff", fontFamily: "MaliBold" }}
+                            onPress={() => callApiGetPets(category, subcategory)}
+                        >
+                            Lọc
+                        </Button>
+                    </View>
                 </View>
 
                 <View

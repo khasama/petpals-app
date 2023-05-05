@@ -57,9 +57,11 @@ const Checkout = () => {
                         .then(unwrapResult)
                         .then(() => {
                             ToastAndroid.show("Thành công", ToastAndroid.SHORT);
-                            navigation.navigate("Home");
+                            navigation.popToTop();
                         })
-                        .catch((err) => ToastAndroid.show(err, ToastAndroid.SHORT));
+                        .catch((err) => {
+                            ToastAndroid.show(err, ToastAndroid.SHORT)
+                        });
                 }
             } else {
                 ToastAndroid.show(rs.message, ToastAndroid.SHORT);
@@ -153,7 +155,7 @@ const Checkout = () => {
                                         .then(unwrapResult)
                                         .then(() => {
                                             ToastAndroid.show("Thành công", ToastAndroid.SHORT);
-                                            navigation.navigate("Home");
+                                            navigation.popToTop();
                                         })
                                         .catch((err) => ToastAndroid.show(err, ToastAndroid.SHORT));
                                 }}

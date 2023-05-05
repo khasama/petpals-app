@@ -29,6 +29,8 @@ const Item = () => {
     const [subitems, setSubitems] = useState([]);
     const [defaultValue, setDefaultValue] = useState('Loại');
     const dropdownRef = useRef({});
+    const sortMenu = ["Mới nhất", "Cũ nhất", "Giá tăng dần", "Giá giảm dần"];
+    const [sortSelected, setSortSelected] = useState(0);
 
     const [arrProduct, setArrProduct] = useState([]);
     const [item, setItem] = useState(null);
@@ -36,7 +38,7 @@ const Item = () => {
 
     const callApiGetProducts = async () => {
         try {
-            const rs = await getProducts(item, subitem);
+            const rs = await getProducts(item, subitem, null, null, sortSelected);
             if (rs.status == "success") {
                 if (rs.data != null) setArrProduct(rs.data);
             } else {
@@ -161,16 +163,58 @@ const Item = () => {
                             }}
                         />
                     </View>
-                    <Button
+                    <View
                         style={{
-                            backgroundColor: "#fc4503"
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                            marginBottom: 5
                         }}
-                        mode="contained"
-                        labelStyle={{ color: "#fff", fontFamily: "MaliBold" }}
-                        onPress={() => callApiGetProducts()}
                     >
-                        Lọc
-                    </Button>
+                        <SelectDropdown
+                            data={sortMenu}
+                            defaultValueByIndex={0}
+                            defaultValue={"Mới nhất"}
+                            searchInputStyle={{ color: '#fff', fontFamily: 'Mali' }}
+                            rowTextStyle={{ color: '#000', fontFamily: 'Mali', textAlign: 'left' }}
+                            buttonTextStyle={{ color: '#000', fontFamily: 'Mali', textAlign: 'left' }}
+                            dropdownIconPosition={'right'}
+                            selectedRowStyle={{ backgroundColor: "#fc4503" }}
+                            selectedRowTextStyle={{ color: "#fff" }}
+                            buttonStyle={{
+                                padding: 5,
+                                backgroundColor: 'transparent',
+                                borderWidth: 1,
+                                borderColor: "#000",
+                                borderRadius: 10,
+                                width: "45%",
+                                marginHorizontal: 5
+                            }}
+                            onSelect={(selectedItem, index) => {
+                                setSortSelected(index);
+                            }}
+                            buttonTextAfterSelection={(selectedItem, index) => {
+                                return selectedItem;
+                            }}
+                            rowTextForSelection={(item, index) => {
+                                return item;
+                            }}
+                            renderDropdownIcon={() => {
+                                return <Icon name="chevron-down-outline" size={25} color={'#000'} />
+                            }}
+                        />
+                        <Button
+                            style={{
+                                backgroundColor: "#fc4503",
+                                alignSelf: 'center',
+                            }}
+                            mode="contained"
+                            labelStyle={{ color: "#fff", fontFamily: "MaliBold" }}
+                            onPress={() => callApiGetProducts()}
+                        >
+                            Lọc
+                        </Button>
+                    </View>
                 </View>
 
                 <View
