@@ -232,7 +232,7 @@ const Animal = ({ route, navigation }) => {
                     </View>
                 </View>
 
-                <View
+                {/* <View
                     style={{
                         marginHorizontal: 10,
                         marginBottom: 15
@@ -246,7 +246,7 @@ const Animal = ({ route, navigation }) => {
                     >
                         Chó - Husky: 100 kết quả
                     </Text>
-                </View>
+                </View> */}
 
                 <View
                     style={{

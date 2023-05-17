@@ -123,7 +123,8 @@ const Profile = () => {
                                 style={{
                                     backgroundColor: '#fff',
                                     alignItems: 'center',
-                                    borderRadius: 5
+                                    borderRadius: 5,
+                                    marginVertical: 3
                                 }}
                             >
                                 <Text
@@ -133,6 +134,24 @@ const Profile = () => {
                                     }}
                                 >
                                     Đơn hàng của bạn
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={{
+                                    backgroundColor: '#fff',
+                                    alignItems: 'center',
+                                    borderRadius: 5,
+                                    marginVertical: 3
+                                }}
+                                onPress={() => navigation.navigate('MypetsScreen')}
+                            >
+                                <Text
+                                    style={{
+                                        color: '#E72515',
+                                        fontFamily: 'Mali'
+                                    }}
+                                >
+                                    Thú cưng của bạn
                                 </Text>
                             </TouchableOpacity>
 

@@ -23,6 +23,7 @@ const getRouteName = (route) => {
         routeName?.includes('ProductScreen') ||
         routeName?.includes('PetScreen') ||
         routeName?.includes('CheckoutScreen') ||
+        routeName?.includes('MypetsScreen') ||
         routeName?.includes('AuthScreen')
     ) {
         return "none";
